@@ -385,16 +385,6 @@
           <GroupName>Source Group 1</GroupName>
           <Files>
             <File>
-              <FileName>driver.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\driver.c</FilePath>
-            </File>
-            <File>
-              <FileName>driver.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\driver.h</FilePath>
-            </File>
-            <File>
               <FileName>function.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\function.h</FilePath>

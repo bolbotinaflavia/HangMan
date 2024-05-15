@@ -4,6 +4,10 @@
 	#include "stm32f4xx.h"
 	#include <stdio.h>
 	#include <string.h>
+	#define SW3_PIN 0 // PA0 (GPIOA Pin 0)
+#define SW4_PIN 1 // PA1 (GPIOA Pin 1)
+#define SW5_PIN 2 // PA2 (GPIOA Pin 2)
+
 	
 	//registers+memory
 	//void load_word(char word[16]);
@@ -20,16 +24,16 @@
 	//void counter();
 	//void print_tries();
 	
-	//buttons
-	//void config_buttons();
-	//void choose_letter();
+	
+	
 	
 	typedef struct{
 		char litera;
 		int contor;
 	}Litera;
-	Litera litere[26];
-	char litera_curenta = 'A'; 
+	//buttons
+	//void config_buttons();
+	void choose_letter(Litera Litere[]);
 	
 	void delayMs(int n);
 void LCD_nibble_write(char data, unsigned char control);
@@ -44,6 +48,14 @@ void delayMs(int n);
 void SPI1_write(unsigned char data);
 void SPI1_init(void);
 void parse_alphabet(void);
-	void init_litere(void);
+	void init_litere(Litera litere[]);
 	void alegere_litere(void);
+	
+	//switch-uri
+	void init_switch(void);
+	uint8_t read_switch(void);
+	
+	//litere
+		int find_letter(char x,char cur_word[]);
+	
 	#endif

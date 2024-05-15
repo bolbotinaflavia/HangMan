@@ -3,13 +3,20 @@
 #include <string.h>
 #include "function.h"
 #include <stdlib.h>
-
+Litera litere[26];
+	char litera_curenta = 'A'; 
+	
 char *cuvinte[] = {"EXEMPLU", "HANGMAN", "JOC", "PLACA", "NUCLEO"};
 int main(void) {
     /* initialize LCD controller */
     LCD_init();
 		init_hangman(cuvinte);
-    /*while(1) {
+	  init_litere(litere);
+		choose_letter(litere);
+	//init_switch();
+
+	
+	/*while(1) {
         
         LCD_data('_');
         LCD_data('_');

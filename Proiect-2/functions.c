@@ -93,19 +93,6 @@ void delayMs(int n) {
         for (i = 0; i < 3195; i++) ;
 }
 
-//void LED_switch(void){
-	//RCC->AHB1ENR |= 4; /* enable GPIOC clock / RCC->AHB1ENR |= 1; /
-//enable GPIOA clock */
-	//GPIOA->MODER &= ~0x00000C00; /* clear pin mode */ 
-	//GPIOA->MODER |= 0x00000400; /* set pin to output mode */
-	//GPIOC->MODER &= ~0x0C000000; /* clear pin mode to input mode */
-	//while(1) {
-		//if (GPIOC->IDR & 0x2000) /* if PC13 is high */
-			//GPIOA->BSRR = 0x00200000; /* turn off green LED */ 
-		//else
-			//GPIOA->BSRR = 0x00000020;  
-	//}
-//}
 
 char* alege_cuvant_aleatoriu(char *cuvinte[]) {
     //int index = rand() % (sizeof(cuvinte) / sizeof(cuvinte[0]));  // Genereaza un index aleatoriu
@@ -122,40 +109,6 @@ void init_hangman(char *cuvinte[]){
         //LCD_data('_');
 				LCD_data(cuvant[i]);
     }
-		//delayMs(1000);
-				
-				
-      //  LCD_command(1);
-	
-	/*while(1) {
-		
-				//char vector[10];
-        
-        LCD_data('_');
-        LCD_data('_');
-        LCD_data('_');
-        LCD_data('_');
-        LCD_data('_');
-				
-				delayMs(1000);
-				delayMs(1000);
-				delayMs(1000);
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-				LCD_data(' ');
-        delayMs(1000);
-				
-				
-        LCD_command(1);
-        delayMs(500);
-    }*/
 }
 
 /* p8_1.c: Using SPI1 to send A to Z characters
@@ -197,12 +150,23 @@ void SPI1_init(void) {
 
 /* 16 MHz SYSCLK */
 
-void init_litere() {
+//litere
+void init_litere(Litera litere[]) {
+	
     char litera = 'A';
     for (int i = 0; i < 26; i++) {
-        litere[i].litera = litera++;
+        litere[i].litera = litera;
         litere[i].contor = 0;
+		    litera++;
     }
+}
+int find_letter(char x,char cur_word[]){
+	unsigned int i;
+	for(i=0;i<strlen(cur_word);i++){
+		if(cur_word[i]==x)
+			return 1;
+	}
+	return 0;
 }
 
 //void parse_alphabet(void){
@@ -218,5 +182,68 @@ void init_litere() {
         }
     }*/
 		
+
+//initializare si citire switch uri
+
+void init_switch() {
+    // Enable GPIO clock for the port connected to the switches (GPIOC)
+    RCC->AHB1ENR |= RCC_AHB1ENR_GPIOCEN;
+
+    // Configure pins for input mode with pull-up resistors
+    GPIOC->MODER &= ~(GPIO_MODER_MODE8_Msk | GPIO_MODER_MODE9_Msk | GPIO_MODER_MODE10_Msk); // Clear mode bits for PC8, PC9, and PC10
+    GPIOC->PUPDR |= GPIO_PUPDR_PUPD8_0 | GPIO_PUPDR_PUPD9_0 | GPIO_PUPDR_PUPD10_0; // Enable pull-up for PC8, PC9, and PC10
+}
+
+uint8_t read_switch() {
+    uint8_t switchesState = (GPIOC->IDR >> 8) & 0x07; // Read PC8, PC9, and PC10
+    
+    // Invert logic if switches are active low
+    //switchesState = ~switchesState; // If switches are active high, you can remove this line
+    
+    return switchesState;
+}
+
+void choose_letter(Litera litere[]){
+  // RCC->AHB1ENR |=  2;             /* enable GPIOB clock */
+    RCC->AHB1ENR |=  4;             /* enable GPIOC clock */
+
+   // GPIOB->MODER &= ~0x0000ff00;    /* clear pin mode */
+    GPIOB->MODER |=  0x00005500;    /* set pins to output mode */
+   // GPIOC->MODER &= ~0x00FF0000;    /* clear pin mode */
+
+   
+        
+    int i = 0;
+    char old = litere[i].litera;
 		
+		LCD_data(litere[i].litera);
+    while (1) {
+					
+        if (GPIOC->IDR&0x0100) {
+            if (i + 1 > 26)
+                i = 0;
+            else
+                i++;
+							LCD_command(0x01);
+						delayMs(100);
+						LCD_data(litere[i].litera);
+        }
+
+        if (GPIOC->IDR&0x0200) {
+            //ok = 0;
+           // break;
+        }
+
+        if (GPIOC->IDR&0x0400) {
+            if (i - 1 < 0)
+                i = 26;
+            else
+                i--;
+							LCD_command(0x01);
+						delayMs(100);
+						LCD_data(litere[i].litera);
+					
+        }
+    }
+}
 //}
