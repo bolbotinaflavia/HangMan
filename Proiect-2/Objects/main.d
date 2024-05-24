@@ -11,4 +11,5 @@
   C:\Users\flavia\AppData\Local\Arm\Packs\Keil\STM32F4xx_DFP\2.17.1\Drivers\CMSIS\Device\ST\STM32F4xx\Include\system_stm32f4xx.h \
   C:\Keil_v5\ARM\ARMCLANG\include\stdio.h \
   C:\Keil_v5\ARM\ARMCLANG\include\string.h function.h \
-  C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h
+  C:\Keil_v5\ARM\ARMCLANG\include\stdlib.h \
+  C:\Keil_v5\ARM\ARMCLANG\include\time.h
